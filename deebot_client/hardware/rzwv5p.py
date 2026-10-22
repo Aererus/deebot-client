@@ -28,7 +28,7 @@ from deebot_client.commands.json.carpet import (
 )
 from deebot_client.commands.json.charge import Charge
 from deebot_client.commands.json.charge_state import GetChargeState
-from deebot_client.commands.json.clean import Clean, CleanArea, GetCleanInfo
+from deebot_client.commands.json.clean import CleanAreaV2, CleanV2, GetCleanInfoV2
 from deebot_client.commands.json.clean_count import GetCleanCount, SetCleanCount
 from deebot_client.commands.json.clean_logs import GetCleanLogs
 from deebot_client.commands.json.clean_preference import (
@@ -46,7 +46,7 @@ from deebot_client.commands.json.life_span import GetLifeSpan, ResetLifeSpan
 from deebot_client.commands.json.map import (
     GetCachedMapInfo,
     GetMajorMap,
-    GetMapSet,
+    GetMapSetV2,
     GetMapTrace,
     GetMinorMap,
     SetMajorMap,
@@ -118,7 +118,7 @@ def get_device_info() -> StaticDeviceInfo:
             battery=CapabilityEvent(BatteryEvent, [GetBattery()]),
             charge=CapabilityExecute(Charge),
             clean=CapabilityClean(
-                action=CapabilityCleanAction(command=Clean, area=CleanArea),
+                action=CapabilityCleanAction(command=CleanV2, area=CleanAreaV2),
                 continuous=CapabilitySetEnable(
                     ContinuousCleaningEvent,
                     [GetContinuousCleaning()],
@@ -175,7 +175,7 @@ def get_device_info() -> StaticDeviceInfo:
                 position=CapabilityEvent(PositionsEvent, [GetPos()]),
                 relocation=CapabilityExecute(SetRelocationState),
                 rooms=CapabilityEvent(RoomsEvent, [GetCachedMapInfo()]),
-                set=CapabilityExecute(GetMapSet),
+                set=CapabilityExecute(GetMapSetV2),
                 trace=CapabilityEvent(MapTraceEvent, [GetMapTrace()]),
             ),
             network=CapabilityEvent(NetworkInfoEvent, [GetNetInfo()]),
@@ -201,7 +201,7 @@ def get_device_info() -> StaticDeviceInfo:
                 ),
                 volume=CapabilitySet(VolumeEvent, [GetVolume()], SetVolume),
             ),
-            state=CapabilityEvent(StateEvent, [GetChargeState(), GetCleanInfo()]),
+            state=CapabilityEvent(StateEvent, [GetChargeState(), GetCleanInfoV2()]),
             stats=CapabilityStats(
                 clean=CapabilityEvent(StatsEvent, [GetStats()]),
                 report=CapabilityEvent(ReportStatsEvent, []),
